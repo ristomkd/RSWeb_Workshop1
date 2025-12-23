@@ -1,0 +1,82 @@
+﻿@model IEnumerable<workshop_1.Models.Enrollment>
+
+@{
+    ViewData["Title"] = "Enrollments";
+}
+
+<h1>Enrollments</h1>
+
+<p>
+    <a asp-action="Create"
+       asp-route-courseId="@ViewBag.CourseId"
+       class="btn btn-success">
+        Enroll New
+    </a>
+</p>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Course)</th>
+            <th>@Html.DisplayNameFor(model => model.Student)</th>
+            <th>@Html.DisplayNameFor(model => model.Semester)</th>
+            <th>@Html.DisplayNameFor(model => model.Year)</th>
+            <th>@Html.DisplayNameFor(model => model.Grade)</th>
+            <th>Seminar</th>
+            <th>@Html.DisplayNameFor(model => model.ExamPoints)</th>
+            <th>@Html.DisplayNameFor(model => model.SeminarPoints)</th>
+            <th>@Html.DisplayNameFor(model => model.ProjectPoints)</th>
+            <th>@Html.DisplayNameFor(model => model.AdditionalPoints)</th>
+            <th>@Html.DisplayNameFor(model => model.FinishDate)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Course?.Title</td>
+
+                <td>@item.Student?.FirstName @item.Student?.LastName</td>
+
+                <td>@item.Semester</td>
+
+                <td>@item.Year</td>
+
+                <td>@item.Grade</td>
+
+                <!-- Seminar file -->
+                <td>
+                    @if (!string.IsNullOrEmpty(item.SeminarUrl))
+                    {
+                        <a href="@item.SeminarUrl" target="_blank">
+                            @item.SeminarOriginalName
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No file</span>
+                    }
+                </td>
+
+                <td>@item.ExamPoints</td>
+
+                <td>@item.SeminarPoints</td>
+
+                <td>@item.ProjectPoints</td>
+
+                <td>@item.AdditionalPoints</td>
+
+                <td>@item.FinishDate?.ToString("dd.MM.yyyy")</td>
+
+                <!-- Actions -->
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
