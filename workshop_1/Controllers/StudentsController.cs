@@ -101,7 +101,7 @@ namespace workshop_1.Controllers
         {
             if (ModelState.IsValid)
             {
-                // ===== PROFILE IMAGE UPLOAD =====
+                // pfp image upload
                 if (student.ProfileImage != null && student.ProfileImage.Length > 0)
                 {
                     var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads/students");

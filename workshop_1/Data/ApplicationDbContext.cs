@@ -12,68 +12,53 @@ namespace workshop_1.Data
         {
         }
 
-        // =====================
         // DbSets (Tables)
-        // =====================
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
 
-        // =====================
         // Fluent API
-        // =====================
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // ---------------------
             // COURSE → FIRST TEACHER (one-to-many)
-            // ---------------------
             modelBuilder.Entity<Course>()
-                .HasOne(c => c.FirstTeacher)
-                .WithMany(t => t.FirstTeacherCourses)
-                .HasForeignKey(c => c.FirstTeacherId)
+                .HasOne(c => c.FirstTeacher) //course ima EDEN first teacher
+                .WithMany(t => t.FirstTeacherCourses) // teacher ima MNOGU first teacher courses
+                .HasForeignKey(c => c.FirstTeacherId) //foreign key vo course
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ---------------------
             // COURSE → SECOND TEACHER (one-to-many)
-            // ---------------------
             modelBuilder.Entity<Course>()
                 .HasOne(c => c.SecondTeacher)
                 .WithMany(t => t.SecondTeacherCourses)
                 .HasForeignKey(c => c.SecondTeacherId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ---------------------
             // ENROLLMENT → STUDENT (many-to-one)
-            // ---------------------
+          
             modelBuilder.Entity<Enrollment>()
-                .HasOne(e => e.Student)
-                .WithMany(s => s.Enrollments)
+                .HasOne(e => e.Student) // enrollments ima EDEN student
+                .WithMany(s => s.Enrollments) // student ima MNOGU enrollments
                 .HasForeignKey(e => e.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // ---------------------
             // ENROLLMENT → COURSE (many-to-one)
-            // ---------------------
             modelBuilder.Entity<Enrollment>()
-                .HasOne(e => e.Course)
-                .WithMany(c => c.Enrollments)
+                .HasOne(e => e.Course) // enrollment ima EDEN course
+                .WithMany(c => c.Enrollments) // course ima MNOGU enrollments
                 .HasForeignKey(e => e.CourseId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // ---------------------
             // OPTIONAL: UNIQUE CONSTRAINT
             // (еден студент да не се запише двапати на ист предмет)
-            // ---------------------
             modelBuilder.Entity<Enrollment>()
                 .HasIndex(e => new { e.StudentId, e.CourseId })
                 .IsUnique();
 
-            // =====================
             // SEED DATA
-            // =====================
 
             // ---------- TEACHERS ----------
             modelBuilder.Entity<Teacher>().HasData(

@@ -73,7 +73,7 @@ namespace workshop_1.Controllers
         {
             if (ModelState.IsValid)
             {
-                // ===== PROFILE IMAGE UPLOAD =====
+                // pfp image upload
                 if (teacher.ProfileImage != null && teacher.ProfileImage.Length > 0)
                 {
                     var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads/teachers");
@@ -121,7 +121,7 @@ namespace workshop_1.Controllers
             {
                 try
                 {
-                    // ===== PROFILE IMAGE UPLOAD (IF NEW IMAGE SELECTED) =====
+                    // pfp image upload if new one is selected
                     if (teacher.ProfileImage != null && teacher.ProfileImage.Length > 0)
                     {
                         var uploadsFolder = Path.Combine(_env.WebRootPath, "uploads/teachers");
