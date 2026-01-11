@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using workshop_1.Data;
 
@@ -11,9 +12,11 @@ using workshop_1.Data;
 namespace workshop_1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260109152807_IdentityAdded")]
+    partial class IdentityAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,7 +207,10 @@ namespace workshop_1.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("StudentId")
+                    b.Property<int?>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("StudentId1")
                         .HasColumnType("bigint");
 
                     b.Property<int?>("TeacherId")
@@ -227,13 +233,9 @@ namespace workshop_1.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("StudentId")
-                        .IsUnique()
-                        .HasFilter("[StudentId] IS NOT NULL");
+                    b.HasIndex("StudentId1");
 
-                    b.HasIndex("TeacherId")
-                        .IsUnique()
-                        .HasFilter("[TeacherId] IS NOT NULL");
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -386,9 +388,8 @@ namespace workshop_1.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("StudentId", "CourseId", "Year", "Semester")
-                        .IsUnique()
-                        .HasFilter("[Year] IS NOT NULL AND [Semester] IS NOT NULL");
+                    b.HasIndex("StudentId", "CourseId")
+                        .IsUnique();
 
                     b.ToTable("Enrollments");
 
@@ -668,14 +669,12 @@ namespace workshop_1.Migrations
             modelBuilder.Entity("workshop_1.Models.ApplicationUser", b =>
                 {
                     b.HasOne("workshop_1.Models.Student", "Student")
-                        .WithOne()
-                        .HasForeignKey("workshop_1.Models.ApplicationUser", "StudentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("StudentId1");
 
                     b.HasOne("workshop_1.Models.Teacher", "Teacher")
-                        .WithOne()
-                        .HasForeignKey("workshop_1.Models.ApplicationUser", "TeacherId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
 
                     b.Navigation("Student");
 
